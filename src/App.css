@@ -1,0 +1,14 @@
+@import url("http://getbootstrap.com/dist/css/bootstrap.min.css");
+
+.App {
+  text-align: center;
+}
+
+.thumbnail {
+  padding-top: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.shadow-light {
+  box-shadow: 0px 3px 3px 0px rgba(2, 2, 2, 0.2);
+}
