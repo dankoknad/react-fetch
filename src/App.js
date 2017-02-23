@@ -45,7 +45,6 @@ export default class App extends Component {
       this.setState({page,pages});
       this.fetchAPI();
     }
-
   }
 
   componentDidMount() {
@@ -53,6 +52,8 @@ export default class App extends Component {
   }
 
   render() {
+    const {page, pages} = this.state;
+
     const renderItems = this.state.items.map((item) => {
       const {cell, picture, name, location, phone, email} = item;
       return (
@@ -72,9 +73,9 @@ export default class App extends Component {
       )
     });
 
-    const pages = this.state.pages.map((item, i)=>{
+    const paginationNum = pages.map((item, i)=>{
       return  (
-        <li key={i} className={(this.state.page === item) ? "active" : null}>
+        <li key={i} className={(page === item) ? "active" : null}>
           <a onClick={this.updatePage}
               data-value={item}
               href="#">{item}
@@ -83,18 +84,18 @@ export default class App extends Component {
       );
     });
 
-
     return (
       <div className="App">        
         <div className="container">
           <h3>ReactJS, Fetch API, Random User Generator, Pagination</h3>
+
           <ul className="pagination">
             <li>
-              <a onClick={this.updatePage} data-value={this.state.page > 1 ? this.state.page - 1 : 1} className="btn-prev" href="#" aria-label="Previous">&laquo;</a>
+              <a onClick={this.updatePage} data-value={page > 1 ? page - 1 : 1} href="#" aria-label="Previous">&laquo;</a>
             </li>
-            {pages}
+            {paginationNum}
             <li>
-              <a onClick={this.updatePage} data-value={this.state.page > 0 ? this.state.page + 1 : 1} href="#" aria-label="Next">&raquo;</a>
+              <a onClick={this.updatePage} data-value={page > 0 ? page + 1 : 1} href="#" aria-label="Next">&raquo;</a>
             </li>
           </ul>
 
