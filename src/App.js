@@ -1,42 +1,60 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import './App.css';
-import {capitalizeFirstLetter, toTitleCase} from './helpers'
+import {capitalizeFirstLetter, toTitleCase, range} from './helpers';
 
-class App extends Component {
+
+export default class App extends Component {
   constructor() {
     super();
-    this.state = { items: [] };
+    this.state = { 
+      items: [],
+      pages: [1,2,3,4,5],
+      page: 1
+    };
+
+    this.fetchAPI = this.fetchAPI.bind(this);
+    this.updatePage = this.updatePage.bind(this);
+  }
+
+  fetchAPI(){
+    setTimeout(() => {  
+      const pageNum = this.state.page;
+
+      fetch(`https://randomuser.me/api/?page=${pageNum}&seed=same&results=6`) 
+        .then(result => {
+          return result.json();
+        })
+        .then(d => {
+          console.log(d.results);
+          this.setState({items: d.results});
+        });
+    }, 0);
+  }
+
+  updatePage(e){
+    const page = Number(e.target.getAttribute('data-value'));
+    let pages = this.state.pages;
+
+    (page > 3) 
+      ? pages = range((page-2), (page+2)) 
+      : pages = [1,2,3,4,5];
+
+    console.log(page);
+    console.log(pages);
+
+    this.setState({page,pages});
+    this.fetchAPI();
   }
   
   componentDidMount() {
-    fetch(`https://randomuser.me/api/?results=12`) 
-      .then(result => {
-        // console.log(result);
-        return result.json();
-      })
-      .then(d => {
-        console.log(d.results);
-        this.setState({items: d.results});
-        // console.log(this.state.items);
-      });  
-  }
-
-  renderItems(){
-    this.state.items.map((item) => {
-      return (
-        <div key={item.id} >
-          {item.name.first}
-        </div>
-      )
-    });
+    this.fetchAPI();
   }
 
   render() {
     const renderItems = this.state.items.map((item) => {
       const {cell, picture, name, location, phone, email} = item;
       return (
-        <div key={cell} className="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <div key={cell} className="col-md-4 col-sm-6 col-xs-12">
           <div className="thumbnail">
             <img src={picture.large} className="img-circle shadow-light" alt=".." />
             <div className="caption">
@@ -53,17 +71,24 @@ class App extends Component {
       )
     });
 
+    const pages = this.state.pages.map((item, i)=>{
+      return  <li key={i} className={(this.state.page === item) ? "active" : ""}>
+                <a  onClick={this.updatePage}
+                    data-value={item}
+                    href="#">{item}
+                </a>
+              </li>;
+    });
+
     return (
-      <div className="App">
-        
+      <div className="App">        
         <div className="container">
-          <div className="row">
-            {renderItems}
-          </div>
+        <ul className="pagination">{pages} </ul>
+        <div className="row">
+          {renderItems}
+        </div>
         </div>
       </div>
     );
   }
 }
-
-export default App;
