@@ -62,8 +62,7 @@ export default class App extends Component {
               <h5>{toTitleCase(`${location.city}, ${location.state}`)} <br/>
                 {location.street}
               </h5>
-              <h5><span className="glyphicon glyphicon-phone" aria-hidden="true"></span> {phone}</h5>
-              
+              <h5><span className="glyphicon glyphicon-phone" aria-hidden="true"></span> {phone}</h5>              
               <a href={`mailto:${email}`} target="_top"><span className="btn btn-info glyphicon glyphicon-envelope" aria-hidden="true"></span></a>
             </div>
           </div>
@@ -72,21 +71,25 @@ export default class App extends Component {
     });
 
     const pages = this.state.pages.map((item, i)=>{
-      return  <li key={i} className={(this.state.page === item) ? "active" : ""}>
-                <a  onClick={this.updatePage}
-                    data-value={item}
-                    href="#">{item}
-                </a>
-              </li>;
+      return  (
+        <li key={i} className={(this.state.page === item) ? "active" : ""}>
+          <a  onClick={this.updatePage}
+              data-value={item}
+              href="#">{item}
+          </a>
+        </li>
+      );
     });
 
     return (
       <div className="App">        
         <div className="container">
-        <ul className="pagination">{pages} </ul>
-        <div className="row">
-          {renderItems}
-        </div>
+          <h3>ReactJS, Fetch API, Random User Generator, Pagination</h3>
+          <ul className="pagination">{pages} </ul>
+          <div className="row">
+            {renderItems}
+          </div>
+          <div className="author">Made with <span className="text-danger">♥</span> by <a href="http://dankoknad.github.io/" target="_blank">Danko</a></div>  
         </div>
       </div>
     );
