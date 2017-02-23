@@ -17,7 +17,7 @@ export default class App extends Component {
   }
 
   fetchAPI(){
-    setTimeout(() => {  
+    setTimeout(() => {
       const pageNum = this.state.page;
 
       fetch(`https://randomuser.me/api/?page=${pageNum}&seed=same&results=6`) 
@@ -25,27 +25,29 @@ export default class App extends Component {
           return result.json();
         })
         .then(d => {
-          console.log(d.results);
           this.setState({items: d.results});
         });
     }, 0);
   }
 
   updatePage(e){
+    e.preventDefault();
+
+    const currentPage = this.state.page;
     const page = Number(e.target.getAttribute('data-value'));
     let pages = this.state.pages;
 
-    (page > 3) 
-      ? pages = range((page-2), (page+2)) 
-      : pages = [1,2,3,4,5];
+    if(currentPage !== page){
+      (page > 4 ) 
+        ? pages = range((page-2), (page+2)) 
+        : pages = [1,2,3,4,5];
 
-    console.log(page);
-    console.log(pages);
+      this.setState({page,pages});
+      this.fetchAPI();
+    }
 
-    this.setState({page,pages});
-    this.fetchAPI();
   }
-  
+
   componentDidMount() {
     this.fetchAPI();
   }
@@ -72,8 +74,8 @@ export default class App extends Component {
 
     const pages = this.state.pages.map((item, i)=>{
       return  (
-        <li key={i} className={(this.state.page === item) ? "active" : ""}>
-          <a  onClick={this.updatePage}
+        <li key={i} className={(this.state.page === item) ? "active" : null}>
+          <a onClick={this.updatePage}
               data-value={item}
               href="#">{item}
           </a>
@@ -81,11 +83,21 @@ export default class App extends Component {
       );
     });
 
+
     return (
       <div className="App">        
         <div className="container">
           <h3>ReactJS, Fetch API, Random User Generator, Pagination</h3>
-          <ul className="pagination">{pages} </ul>
+          <ul className="pagination">
+            <li>
+              <a onClick={this.updatePage} data-value={this.state.page > 1 ? this.state.page - 1 : 1} className="btn-prev" href="#" aria-label="Previous">&laquo;</a>
+            </li>
+            {pages}
+            <li>
+              <a onClick={this.updatePage} data-value={this.state.page > 0 ? this.state.page + 1 : 1} href="#" aria-label="Next">&raquo;</a>
+            </li>
+          </ul>
+
           <div className="row">
             {renderItems}
           </div>
