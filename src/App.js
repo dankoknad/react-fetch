@@ -4,19 +4,13 @@ import {capitalizeFirstLetter, toTitleCase, range} from './helpers';
 
 
 export default class App extends Component {
-  constructor() {
-    super();
-    this.state = { 
-      items: [],
-      pages: [1,2,3,4,5],
-      page: 1
-    };
-
-    this.fetchAPI = this.fetchAPI.bind(this);
-    this.updatePage = this.updatePage.bind(this);
+  state = { 
+    items: [],
+    pages: [1,2,3,4,5],
+    page: 1
   }
 
-  fetchAPI(){
+  fetchAPI = () => {
     setTimeout(() => {
       const pageNum = this.state.page;
 
@@ -30,7 +24,7 @@ export default class App extends Component {
     }, 0);
   }
 
-  updatePage(e){
+  updatePage = (e) => {
     e.preventDefault();
 
     const currentPage = this.state.page;
