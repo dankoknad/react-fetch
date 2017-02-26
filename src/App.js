@@ -7,46 +7,49 @@ export default class App extends Component {
   state = { 
     items: [],
     pages: [1,2,3,4,5],
-    page: 1
-  }
-
-  fetchAPI = () => {
-    setTimeout(() => {
-      const pageNum = this.state.page;
-
-      fetch(`https://randomuser.me/api/?page=${pageNum}&seed=same&results=6`) 
-        .then(result => {
-          return result.json();
-        })
-        .then(d => {
-          this.setState({items: d.results});
-        });
-    }, 0);
+    currentPage: 1
   }
 
   updatePage = (e) => {
     e.preventDefault();
 
-    const currentPage = this.state.page;
-    const page = Number(e.target.getAttribute('data-value'));
+    const currentPage = this.state.currentPage;
+    const toPage = Number(e.target.getAttribute('data-value'));
     let pages = this.state.pages;
 
-    if(currentPage !== page){
-      (page > 4 ) 
-        ? pages = range((page-2), (page+2)) 
+    if(currentPage !== toPage){
+      (toPage > 4 ) 
+        ? pages = range((toPage - 2), (toPage + 2)) 
         : pages = [1,2,3,4,5];
-
-      this.setState({page,pages});
-      this.fetchAPI();
     }
+
+    fetch(`https://randomuser.me/api/?page=${toPage}&seed=same&results=6`) 
+      .then(result => {
+        return result.json();
+      })
+      .then(d => {
+        this.setState({
+          items: d.results,
+          pages,
+          currentPage: toPage
+        });
+      });
   }
 
   componentDidMount() {
-    this.fetchAPI();
+    const toPage = this.state.currentPage;
+
+    fetch(`https://randomuser.me/api/?page=${toPage}&seed=same&results=6`) 
+      .then(result => {
+        return result.json();
+      })
+      .then(d => {
+        this.setState({items: d.results});
+      });
   }
 
   render() {
-    const {page, pages} = this.state;
+    const {currentPage, pages} = this.state;
 
     const renderItems = this.state.items.map((item) => {
       const {cell, picture, name, location, phone, email} = item;
@@ -67,9 +70,9 @@ export default class App extends Component {
       )
     });
 
-    const paginationNum = pages.map((item, i)=>{
+    const paginationNum = pages.map((item)=>{
       return  (
-        <li key={i} className={(page === item) ? "active" : null}>
+        <li key={item} className={(currentPage === item) ? "active" : null}>
           <a onClick={this.updatePage}
               data-value={item}
               href="#">{item}
@@ -85,11 +88,11 @@ export default class App extends Component {
 
           <ul className="pagination">
             <li>
-              <a onClick={this.updatePage} data-value={page > 1 ? page - 1 : 1} href="#" aria-label="Previous">&laquo;</a>
+              <a onClick={this.updatePage} data-value={currentPage > 1 ? currentPage - 1 : 1} href="#" aria-label="Previous">&laquo;</a>
             </li>
             {paginationNum}
             <li>
-              <a onClick={this.updatePage} data-value={page > 0 ? page + 1 : 1} href="#" aria-label="Next">&raquo;</a>
+              <a onClick={this.updatePage} data-value={currentPage > 0 ? currentPage + 1 : 1} href="#" aria-label="Next">&raquo;</a>
             </li>
           </ul>
 
