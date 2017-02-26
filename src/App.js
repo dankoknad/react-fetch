@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import {range} from './helpers';
 import Card from './Card'
+import Pagination from './Pagination'
 
 
 export default class App extends Component {
@@ -58,31 +59,16 @@ export default class App extends Component {
       )
     });
 
-    const paginationNum = pages.map((item)=>{
-      return  (
-        <li key={item} className={(currentPage === item) ? "active" : null}>
-          <a onClick={this.updatePage}
-              data-value={item}
-              href="#">{item}
-          </a>
-        </li>
-      );
-    });
-
     return (
       <div className="App">        
         <div className="container">
           <h3>ReactJS, Fetch API, Random User Generator, Pagination</h3>
 
-          <ul className="pagination">
-            <li>
-              <a onClick={this.updatePage} data-value={currentPage > 1 ? currentPage - 1 : 1} href="#" aria-label="Previous">&laquo;</a>
-            </li>
-            {paginationNum}
-            <li>
-              <a onClick={this.updatePage} data-value={currentPage > 0 ? currentPage + 1 : 1} href="#" aria-label="Next">&raquo;</a>
-            </li>
-          </ul>
+          <Pagination
+            updatePage={this.updatePage}
+            currentPage={currentPage}
+            pages={pages}
+          />          
 
           <div className="row">
             {renderCards}
