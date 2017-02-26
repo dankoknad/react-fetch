@@ -53,9 +53,9 @@ export default class App extends Component {
   render() {
     const {currentPage, pages, items} = this.state;
 
-    const renderCards = items.map((item, i) => {
+    const renderCards = items.map((item) => {
       return (
-        <Card key={i} {...item} />
+        <Card key={item.login.username} {...item} />
       )
     });
 
