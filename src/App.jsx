@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './app.css';
 import {range} from './helpers';
 import Card from './Card'
 import Pagination from './Pagination'
@@ -59,7 +59,7 @@ export default class App extends Component {
     });
 
     return (
-      <div className="App">        
+      <div className="app">        
         <div className="container">
           <h3>ReactJS, Fetch API, Random User Generator, Pagination</h3>
 
