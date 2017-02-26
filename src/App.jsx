@@ -15,9 +15,8 @@ export default class App extends Component {
   updatePage = (e) => {
     e.preventDefault();
 
-    const currentPage = this.state.currentPage;
+    let {pages, currentPage} = this.state;
     const toPage = Number(e.target.getAttribute('data-value'));
-    let pages = this.state.pages;
 
     if(currentPage !== toPage){
       (toPage > 4 ) 

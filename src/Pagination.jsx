@@ -11,6 +11,7 @@ export default class Pagination extends Component {
         </li>
       );
     });
+    
     return (
       <ul className="pagination">
         <li>
