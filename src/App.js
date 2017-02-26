@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import {capitalizeFirstLetter, toTitleCase, range} from './helpers';
+import {range} from './helpers';
+import Card from './Card'
 
 
 export default class App extends Component {
@@ -23,7 +24,7 @@ export default class App extends Component {
         : pages = [1,2,3,4,5];
     }
 
-    fetch(`https://randomuser.me/api/?page=${toPage}&seed=same&results=6`) 
+    fetch(`https://randomuser.me/api/?page=${toPage}&seed=qwer&results=6`) 
       .then(result => {
         return result.json();
       })
@@ -39,7 +40,7 @@ export default class App extends Component {
   componentDidMount() {
     const toPage = this.state.currentPage;
 
-    fetch(`https://randomuser.me/api/?page=${toPage}&seed=same&results=6`) 
+    fetch(`https://randomuser.me/api/?page=${toPage}&seed=qwer&results=6`) 
       .then(result => {
         return result.json();
       })
@@ -49,24 +50,11 @@ export default class App extends Component {
   }
 
   render() {
-    const {currentPage, pages} = this.state;
+    const {currentPage, pages, items} = this.state;
 
-    const renderItems = this.state.items.map((item) => {
-      const {cell, picture, name, location, phone, email} = item;
+    const renderCards = items.map((item, i) => {
       return (
-        <div key={cell} className="col-md-4 col-sm-6 col-xs-12">
-          <div className="thumbnail">
-            <img src={picture.large} className="img-circle shadow-light" alt=".." />
-            <div className="caption">
-              <h3>{capitalizeFirstLetter(name.first)} {capitalizeFirstLetter(name.last)}</h3>
-              <h5>{toTitleCase(`${location.city}, ${location.state}`)} <br/>
-                {location.street}
-              </h5>
-              <h5><span className="glyphicon glyphicon-phone" aria-hidden="true"></span> {phone}</h5>              
-              <a href={`mailto:${email}`} target="_top"><span className="btn btn-info glyphicon glyphicon-envelope" aria-hidden="true"></span></a>
-            </div>
-          </div>
-        </div>
+        <Card key={i} {...item} />
       )
     });
 
@@ -97,7 +85,7 @@ export default class App extends Component {
           </ul>
 
           <div className="row">
-            {renderItems}
+            {renderCards}
           </div>
           <div className="author">Made with <span className="text-danger">♥</span> by <a href="http://dankoknad.github.io/" target="_blank">Danko</a></div>  
         </div>
