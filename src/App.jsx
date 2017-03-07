@@ -12,41 +12,40 @@ export default class App extends Component {
     currentPage: 1
   }
 
+  fetchData = (url, pages, currentPage, toPage) => {
+    fetch(url, pages, currentPage, toPage) 
+      .then(result => {
+        return result.json();
+      })
+      .then(d => {
+        (pages && currentPage) 
+          ? this.setState({
+            items: d.results,
+            pages,
+            currentPage: toPage
+          })       
+          : this.setState({
+            items: d.results
+          });
+      });
+  }
+
   updatePage = (e) => {
     e.preventDefault();
 
     let {pages, currentPage} = this.state;
     const toPage = Number(e.target.getAttribute('data-value'));
+    const url = `https://randomuser.me/api/?page=${toPage}&seed=qwer&results=6`;
 
-    if(currentPage !== toPage){
-      (toPage > 4 ) 
-        ? pages = range((toPage - 2), (toPage + 2)) 
-        : pages = [1,2,3,4,5];
-    }
+    (currentPage !== toPage) && (toPage > 4 ) 
+      ? pages = range((toPage - 2), (toPage + 2)) 
+      : pages = [1,2,3,4,5];
 
-    fetch(`https://randomuser.me/api/?page=${toPage}&seed=qwer&results=6`) 
-      .then(result => {
-        return result.json();
-      })
-      .then(d => {
-        this.setState({
-          items: d.results,
-          pages,
-          currentPage: toPage
-        });
-      });
+    (currentPage !== toPage) && this.fetchData(url, pages, currentPage, toPage); 
   }
 
   componentDidMount() {
-    const toPage = this.state.currentPage;
-
-    fetch(`https://randomuser.me/api/?page=${toPage}&seed=qwer&results=6`) 
-      .then(result => {
-        return result.json();
-      })
-      .then(d => {
-        this.setState({items: d.results});
-      });
+    this.fetchData("https://randomuser.me/api/?page=1&seed=qwer&results=6");
   }
 
   render() {
