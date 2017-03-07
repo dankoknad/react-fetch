@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './app.css';
 import {range} from './helpers';
-import Card from './Card'
-import Pagination from './Pagination'
+import Card from './Card';
+import Pagination from './Pagination';
 
 
 export default class App extends Component {
