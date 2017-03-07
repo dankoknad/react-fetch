@@ -20,12 +20,12 @@ export default class App extends Component {
       .then(d => {
         (pages && currentPage) 
           ? this.setState({
-            items: d.results,
-            pages,
-            currentPage: toPage
+              items: d.results,
+              pages,
+              currentPage: toPage
           })       
           : this.setState({
-            items: d.results
+              items: d.results
           });
       });
   }
